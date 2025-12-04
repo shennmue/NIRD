@@ -56,108 +56,140 @@ export const VillageNIRD = () => {
           <h2 className="font-display text-[clamp(2rem,8vw,6rem)] text-text-light text-glow-green mb-6">
             LE VILLAGE NIRD
           </h2>
-          <p className="font-body text-lg md:text-xl text-text-light/90 leading-relaxed mb-4 drop-shadow-lg">
-            Pour un Numérique Inclusif, Responsable et Durable dans les établissements scolaires.
-            Au carrefour de la transformation numérique et de la transition écologique.
+          <p className="font-body text-xl md:text-2xl text-text-light leading-relaxed mb-4 drop-shadow-lg font-medium">
+            La solution existe. Elle est gratuite, écologique et déjà utilisée par des millions de personnes.
           </p>
-          <p className="font-body text-base text-text-light/80 leading-relaxed mb-8 drop-shadow-lg max-w-4xl mx-auto">
-            Un collectif enseignant issu de la forge des communs numériques éducatifs invite les établissements
-            scolaires et les collectivités à s'engager progressivement vers un numérique libre et écocitoyen,
-            en adoptant Linux — un système léger qui permet à un ordinateur de 10 ou 12 ans de fonctionner
-            aussi vite qu'au premier jour.
+          <p className="font-body text-base md:text-lg text-text-light/90 leading-relaxed mb-8 drop-shadow-lg max-w-4xl mx-auto">
+            <span className="text-village-leaf font-semibold">Linux</span>, c'est un système d'exploitation
+            alternatif à Windows — libre, gratuit et beaucoup plus léger. Résultat ? Un ordinateur de 10 ans
+            retrouve sa jeunesse. Plus besoin de jeter, plus besoin de racheter. Et vos données restent les vôtres.
           </p>
 
+          {/* C'est quoi NIRD */}
+          <div className="mb-10 p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-green/30">
+            <h3 className="font-display text-2xl text-text-light mb-4">NIRD, c'est quoi ?</h3>
+            <p className="font-body text-sm text-text-light/80 leading-relaxed max-w-3xl mx-auto">
+              Un mouvement né dans les écoles françaises pour adopter Linux et les logiciels libres.
+              Des enseignants, des élèves, des collectivités qui refusent le gaspillage imposé
+              et reprennent le contrôle de leur informatique. NIRD signifie
+              <span className="text-village-leaf"> Numérique Inclusif</span>,
+              <span className="text-village-sky"> Responsable</span> et
+              <span className="text-village-sun"> Durable</span>.
+            </p>
+          </div>
+
           {/* Les 3 piliers */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-green/30">
               <h3 className="font-display text-2xl text-village-leaf mb-3">Inclusif</h3>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed mb-3">
+                <span className="text-text-light font-medium">Le principe :</span> Le numérique pour tous,
+                pas seulement pour ceux qui peuvent se payer le dernier modèle.
+              </p>
               <p className="font-body text-sm text-text-light/80 leading-relaxed">
-                Accès équitable au numérique, réduction de la fracture numérique. Les ordinateurs
-                reconditionnés sont redistribués aux écoles voisines et aux familles dans le besoin.
-                Chaque élève peut contribuer selon ses talents.
+                <span className="text-text-light font-medium">En pratique :</span> Les vieux PC reconditionnés
+                sont donnés aux familles qui en ont besoin. Les élèves de tous niveaux participent au projet,
+                chacun selon ses talents.
               </p>
             </div>
             <div className="p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-sky/30">
               <h3 className="font-display text-2xl text-village-sky mb-3">Responsable</h3>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed mb-3">
+                <span className="text-text-light font-medium">Le principe :</span> Reprendre le contrôle
+                sur nos outils et nos données. Comprendre ce qu'on utilise.
+              </p>
               <p className="font-body text-sm text-text-light/80 leading-relaxed">
-                Usage raisonné et réflexif de technologies souveraines, respectueuses des données
-                personnelles. Les élèves développent leur esprit critique et comprennent l'importance
-                de l'effacement sécurisé des données.
+                <span className="text-text-light font-medium">En pratique :</span> Avec Linux, pas de
+                collecte de données cachée. Les élèves apprennent à protéger leur vie privée et développent
+                un vrai esprit critique face au numérique.
               </p>
             </div>
             <div className="p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-sun/30">
               <h3 className="font-display text-2xl text-village-sun mb-3">Durable</h3>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed mb-3">
+                <span className="text-text-light font-medium">Le principe :</span> Arrêter de jeter
+                ce qui fonctionne encore. Faire durer au lieu de gaspiller.
+              </p>
               <p className="font-body text-sm text-text-light/80 leading-relaxed">
-                Lutte contre l'obsolescence programmée par le choix de Linux. Chaque machine sauvée
-                est un déchet en moins. Le décret du 12 avril 2023 fixe 50% de biens orientés
-                vers le réemploi en 2025.
+                <span className="text-text-light font-medium">En pratique :</span> Un PC sous Linux
+                peut durer 15 ans au lieu de 5. Chaque machine sauvée, c'est moins de pollution
+                et moins d'argent dépensé.
               </p>
             </div>
           </div>
 
-          {/* Les 3 jalons */}
+          {/* Comment ça marche */}
           <h3 className="font-display text-2xl text-text-light mt-10 mb-6 drop-shadow-lg">
-            La démarche en 3 jalons
+            Comment rejoindre le mouvement ?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
             <div className="p-5 bg-black/40 backdrop-blur-sm rounded-lg border border-village-leaf/30">
-              <h4 className="font-display text-lg text-village-leaf mb-2">1. Mobilisation</h4>
-              <p className="font-body text-xs text-text-light/80 leading-relaxed">
-                Un enseignant volontaire devient contact NIRD, sensibilise l'équipe éducative
-                et se met en réseau via Tchap avec d'autres établissements engagés.
+              <h4 className="font-display text-lg text-village-leaf mb-2">1. On se lance</h4>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed">
+                Un prof motivé lève la main et devient le contact NIRD de l'école. Il rejoint
+                la communauté sur Tchap (la messagerie sécurisée de l'État) pour échanger avec
+                d'autres établissements déjà engagés.
               </p>
             </div>
             <div className="p-5 bg-black/40 backdrop-blur-sm rounded-lg border border-village-sky/30">
-              <h4 className="font-display text-lg text-village-sky mb-2">2. Expérimentation</h4>
-              <p className="font-body text-xs text-text-light/80 leading-relaxed">
-                Installation de postes Linux neufs ou reconditionnés. Création d'un club informatique
-                où les élèves participent au reconditionnement. PrimTux pour le primaire, Linux NIRD
-                pour le secondaire.
+              <h4 className="font-display text-lg text-village-sky mb-2">2. On teste</h4>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed">
+                Quelques ordinateurs passent sous Linux. Les élèves peuvent même créer un club
+                pour apprendre à réparer et reconditionner les vieilles machines. C'est concret,
+                c'est formateur, et ça marche !
               </p>
             </div>
             <div className="p-5 bg-black/40 backdrop-blur-sm rounded-lg border border-village-sun/30">
-              <h4 className="font-display text-lg text-village-sun mb-2">3. Intégration</h4>
-              <p className="font-body text-xs text-text-light/80 leading-relaxed">
-                Inscription dans le projet d'établissement, coopération structurée avec la collectivité,
-                le coordinateur devient référent NIRD reconnu auprès de la direction et du ministère.
+              <h4 className="font-display text-lg text-village-sun mb-2">3. On généralise</h4>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed">
+                Ça fonctionne ? On étend à tout l'établissement, en partenariat avec la mairie,
+                le département ou la région. Le projet s'inscrit officiellement dans la vie de l'école.
               </p>
             </div>
           </div>
 
-          {/* Reconditionnement et succès */}
+          {/* Preuves que ça marche */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 text-left">
             <div className="p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-leaf/30">
-              <h3 className="font-display text-xl text-village-leaf mb-3">Le Reconditionnement par les élèves</h3>
+              <h3 className="font-display text-xl text-village-leaf mb-3">Les élèves au cœur du projet</h3>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed mb-3">
+                Imaginez : des collégiens et lycéens qui démontent des PC, diagnostiquent les pannes,
+                changent les pièces défectueuses et installent Linux. Ils apprennent la technique,
+                le travail en équipe, et la satisfaction de donner une seconde vie aux objets.
+              </p>
               <p className="font-body text-sm text-text-light/80 leading-relaxed">
-                Démontage, diagnostic, réparation et installation de Linux. Les élèves apprennent
-                en faisant, développent leur autonomie et voient concrètement que leurs actions
-                ont un effet positif pour la planète. Une expérience éducative, écologique et solidaire.
+                Ces ordinateurs réparés sont ensuite donnés aux familles qui en ont besoin
+                ou aux écoles voisines. C'est de l'écologie concrète ET de la solidarité.
               </p>
             </div>
             <div className="p-6 bg-black/40 backdrop-blur-sm rounded-lg border border-village-sky/30">
-              <h3 className="font-display text-xl text-village-sky mb-3">Ceux qui montrent l'exemple</h3>
+              <h3 className="font-display text-xl text-village-sky mb-3">Ça marche déjà !</h3>
+              <p className="font-body text-sm text-text-light/80 leading-relaxed mb-3">
+                <span className="text-text-light font-medium">La Gendarmerie Nationale :</span> 100 000
+                ordinateurs sous Linux depuis 2002. 20 ans de retour d'expérience positif.
+                "C'est un non-sujet pour nous aujourd'hui !"
+              </p>
               <p className="font-body text-sm text-text-light/80 leading-relaxed">
-                La Gendarmerie : 100 000 postes, 97% sous Linux depuis 2002. Échirolles : 2M€ économisés.
-                Lyon, Grenoble, Strasbourg, Blois, Angoulême, Les Abymes... De plus en plus de collectivités
-                s'orientent vers les logiciels libres.
+                <span className="text-text-light font-medium">La ville d'Échirolles :</span> 2 millions
+                d'euros économisés sur un mandat. Lyon, Grenoble, Strasbourg, Blois suivent le mouvement.
               </p>
             </div>
           </div>
 
           {/* Soutien officiel */}
           <div className="mt-8 p-6 bg-black/30 backdrop-blur-sm rounded-lg border border-text-light/20">
-            <h3 className="font-display text-lg text-text-light mb-3">Soutenu par l'institution</h3>
-            <p className="font-body text-xs text-text-light/70 leading-relaxed">
-              Programme NSI (Eduscol), Stratégie numérique 2023-2027 (MEN), Doctrine technique du numérique,
-              Guide transition écologique (Eduscol), Recommandations ADEME, Loi AGEC, Commission européenne,
-              UNESCO... La démarche NIRD est parfaitement alignée avec les documents officiels.
+            <h3 className="font-display text-lg text-text-light mb-3">Ce n'est pas une initiative isolée</h3>
+            <p className="font-body text-sm text-text-light/80 leading-relaxed">
+              L'Éducation Nationale recommande l'usage des logiciels libres. La loi AGEC impose 50% de
+              réemploi pour le matériel public. L'ADEME, la Commission européenne et l'UNESCO soutiennent
+              cette démarche. NIRD s'inscrit dans un mouvement de fond, pas dans une lubie de geeks.
             </p>
           </div>
 
-          <p className="font-body text-base text-text-light/70 leading-relaxed mt-8 drop-shadow-lg max-w-3xl mx-auto italic">
-            "Le choix du logiciel libre n'est pas fou. On n'est pas perdus, tout fonctionne de manière
-            très similaire et mon travail est exactement le même qu'auparavant." — Témoignage Échirolles
+          <p className="font-body text-lg text-village-leaf leading-relaxed mt-10 drop-shadow-lg max-w-3xl mx-auto font-medium">
+            "On n'est pas perdus, tout fonctionne pareil. Et mon travail est exactement le même qu'avant."
           </p>
+          <p className="font-body text-sm text-text-light/60 mt-2">— Témoignage d'une utilisatrice à Échirolles</p>
         </div>
       </div>
     </section>

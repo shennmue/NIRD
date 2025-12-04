@@ -56,71 +56,94 @@ export const EmpireIntro = () => {
         <h2 className="font-display text-[clamp(2rem,8vw,6rem)] text-empire-red text-glow-red mb-6">
           L'EMPIRE NUMÉRIQUE
         </h2>
-        <p className="font-body text-lg md:text-xl text-text-muted-light leading-relaxed mb-4">
-          Un monde dominé par les géants GAFAM — Google, Amazon, Meta, Microsoft, Apple.
-          Des entreprises mondiales qui imposent leurs règles : obsolescence programmée,
-          trafic de données, perte de liberté et de souveraineté.
+        <p className="font-body text-xl md:text-2xl text-text-muted-light leading-relaxed mb-4 font-medium">
+          Votre ordinateur fonctionne parfaitement... mais on vous dit qu'il est obsolète.
         </p>
-        <p className="font-body text-base text-text-muted-light/80 leading-relaxed mb-8 max-w-4xl mx-auto">
-          La fin des mises à jour de Windows 10 et les problèmes de compatibilité de Windows 11
-          contraignent des tas d'entreprises et de collectivités à mettre une partie de leur parc
-          informatique au rebut. Windows est encore installé sur les 3/4 des ordinateurs dans le monde.
+        <p className="font-body text-base md:text-lg text-text-muted-light/80 leading-relaxed mb-8 max-w-4xl mx-auto">
+          Cinq géants américains — Google, Amazon, Meta, Microsoft, Apple (les "GAFAM") — contrôlent
+          l'essentiel du numérique mondial. Leurs décisions affectent des milliards d'utilisateurs.
+          Aujourd'hui, Microsoft arrête les mises à jour de Windows 10, forçant le remplacement
+          de plus de <span className="text-empire-red font-semibold">400 millions d'ordinateurs</span> encore fonctionnels.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 text-left">
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
             <h3 className="font-display text-xl text-empire-red mb-3">Obsolescence Programmée</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">C'est quoi ?</span> C'est quand un produit est conçu pour
+              devenir inutilisable après un certain temps, vous forçant à en acheter un nouveau.
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              La fin du support de Windows 10 rend artificiellement obsolètes plus de 400 millions
-              d'ordinateurs dans le monde. On croit qu'un ordinateur est "mort" parce qu'il devient lent —
-              en réalité, c'est le système qui devient trop lourd, pas la machine qui est cassée.
+              <span className="text-text-light font-medium">Le piège :</span> Votre ordinateur ralentit ? Ce n'est pas
+              lui qui vieillit mal — c'est Windows qui devient de plus en plus gourmand à chaque mise à jour.
+              Un PC de 10 ans peut encore très bien fonctionner... avec le bon système.
             </p>
           </div>
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
-            <h3 className="font-display text-xl text-empire-red mb-3">Dépendance Technologique</h3>
+            <h3 className="font-display text-xl text-empire-red mb-3">Vos Données, Leur Trésor</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">C'est quoi ?</span> Chaque clic, chaque recherche,
+              chaque document est collecté et analysé. Ces données valent de l'or pour la publicité ciblée.
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              "On a fini par penser que ces logiciels étaient des biens communs, mais en réalité non.
-              Il y a bien des intérêts capitalistiques, géopolitiques et si nous n'y prenons pas garde,
-              l'Europe peut sortir de l'Histoire." — Sénateur Simon Uzenat
+              <span className="text-text-light font-medium">Le problème :</span> Vous n'êtes plus le client,
+              vous êtes le produit. Vos habitudes, vos préférences, votre vie privée sont monétisées
+              sans votre contrôle réel.
             </p>
           </div>
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
-            <h3 className="font-display text-xl text-empire-red mb-3">Impact Environnemental</h3>
+            <h3 className="font-display text-xl text-empire-red mb-3">Désastre Écologique</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">Le chiffre choc :</span> 75% de l'impact environnemental
+              du numérique vient de la <em>fabrication</em> des appareils, pas de leur utilisation.
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              75% de l'empreinte environnementale du numérique provient de la seule fabrication des appareils.
-              Chaque machine jetée inutilement aggrave la crise écologique. L'allongement de la durée de vie
-              des terminaux est un axe majeur de travail.
+              <span className="text-text-light font-medium">La réalité :</span> Jeter un ordinateur qui marche
+              pour en acheter un neuf, c'est gaspiller les métaux rares, l'eau, l'énergie de sa fabrication.
+              Et créer un déchet électronique souvent non recyclé.
             </p>
           </div>
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
-            <h3 className="font-display text-xl text-empire-red mb-3">Coûts Imposés</h3>
+            <h3 className="font-display text-xl text-empire-red mb-3">La Facture Salée</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">Exemple concret :</span> En 2002, Microsoft a voulu
+              faire payer 8 millions d'euros à la Gendarmerie juste pour une mise à jour Windows.
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              La vente liée et le poids des habitudes rendent difficiles les migrations.
-              Microsoft impose des changements coûteux : en 2002, passer à Windows 2000
-              coûtait déjà 8 millions d'euros à la Gendarmerie Nationale.
+              <span className="text-text-light font-medium">Aujourd'hui :</span> Écoles, mairies, hôpitaux...
+              Nos services publics paient des fortunes en licences logicielles à des entreprises américaines,
+              alors que des alternatives gratuites existent.
             </p>
           </div>
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
-            <h3 className="font-display text-xl text-empire-red mb-3">Perte de Souveraineté</h3>
+            <h3 className="font-display text-xl text-empire-red mb-3">Qui Décide Vraiment ?</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">La question :</span> Quand Microsoft décide d'arrêter
+              Windows 10, avez-vous votre mot à dire ? Quand Google change ses conditions, pouvez-vous refuser ?
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              L'argent public investi profite à des acteurs privés étrangers plutôt qu'aux solutions
-              françaises et européennes. Les décideurs ne décident plus : un acteur externe impose
-              des changements pas forcément bienvenus.
+              <span className="text-text-light font-medium">L'enjeu :</span> Notre dépendance à ces géants
+              est un risque pour notre souveraineté. Des décisions prises en Californie impactent
+              nos écoles, nos administrations, notre quotidien.
             </p>
           </div>
           <div className="p-6 bg-black/50 backdrop-blur-sm rounded-lg border border-empire-red/30">
-            <h3 className="font-display text-xl text-empire-red mb-3">Fracture Numérique</h3>
+            <h3 className="font-display text-xl text-empire-red mb-3">Les Oubliés du Numérique</h3>
+            <p className="font-body text-sm text-text-muted-light leading-relaxed mb-3">
+              <span className="text-text-light font-medium">Le constat :</span> Quand il faut racheter un PC
+              tous les 5 ans, les familles modestes décrochent. Les enfants sans ordinateur à la maison
+              sont pénalisés dans leurs études.
+            </p>
             <p className="font-body text-sm text-text-muted-light leading-relaxed">
-              Le renouvellement forcé du matériel creuse les inégalités. Les familles qui n'ont pas
-              les moyens d'acheter du matériel neuf sont laissées pour compte, alors que leurs
-              ordinateurs fonctionnent encore parfaitement.
+              <span className="text-text-light font-medium">L'injustice :</span> L'obsolescence programmée
+              n'est pas qu'un problème technique — c'est un facteur d'inégalité sociale qui creuse
+              la fracture numérique.
             </p>
           </div>
         </div>
 
-        <p className="font-body text-base text-text-muted-light/70 leading-relaxed mt-8 max-w-3xl mx-auto italic">
-          "Il est question d'obsolescence programmée, de trafic de données, de problème de sécurité,
-          de perte de liberté et de souveraineté." — Ville de Grenoble
+        <p className="font-body text-lg text-empire-red/90 leading-relaxed mt-10 max-w-3xl mx-auto font-medium">
+          Et si on reprenait le contrôle ?
         </p>
       </div>
 
