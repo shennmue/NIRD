@@ -1,183 +1,24 @@
-import { useRef, useState, useEffect, Suspense } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, Center } from '@react-three/drei';
+import { useRef, useState, useEffect, Suspense, useCallback, forwardRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, Center, OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Sword component that can be grabbed and swung
-const Sword = ({
-  onSwing,
+// 2D Sword component that follows mouse in screen space
+const Sword2D = ({
+  mousePos,
+  rotation,
 }: {
-  onSwing: (velocity: THREE.Vector3) => void;
+  mousePos: { x: number; y: number };
+  rotation: number;
 }) => {
   const { scene } = useGLTF('/3d/sword.glb');
   const swordRef = useRef<THREE.Group>(null);
-  const { gl } = useThree();
 
-  const isDragging = useRef(false);
-  const previousMousePos = useRef(new THREE.Vector2());
-  const currentMousePos = useRef(new THREE.Vector2());
-  const velocity = useRef(new THREE.Vector3());
-  const targetRotation = useRef(new THREE.Euler(-0.3, 0, 0.5));
-  const targetPosition = useRef(new THREE.Vector3(1, -1, 1));
-
-  useEffect(() => {
-    const handleMouseDown = (e: MouseEvent) => {
-      isDragging.current = true;
-      previousMousePos.current.set(
-        (e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1
-      );
-      currentMousePos.current.copy(previousMousePos.current);
-    };
-
-    const handleMouseMove = (e: MouseEvent) => {
-      currentMousePos.current.set(
-        (e.clientX / window.innerWidth) * 2 - 1,
-        -(e.clientY / window.innerHeight) * 2 + 1
-      );
-
-      if (isDragging.current) {
-        const deltaX = currentMousePos.current.x - previousMousePos.current.x;
-        const deltaY = currentMousePos.current.y - previousMousePos.current.y;
-
-        // Update velocity based on mouse movement
-        velocity.current.set(deltaX * 50, deltaY * 50, 0);
-
-        // Map mouse position to sword rotation and position
-        targetRotation.current.set(
-          -0.3 + currentMousePos.current.y * 1.2,
-          currentMousePos.current.x * 1.5,
-          0.5 - currentMousePos.current.x * 0.8
-        );
-
-        targetPosition.current.set(
-          1 + currentMousePos.current.x * 1.5,
-          -1 + currentMousePos.current.y * 1.2,
-          1
-        );
-
-        previousMousePos.current.copy(currentMousePos.current);
-      }
-    };
-
-    const handleMouseUp = () => {
-      if (isDragging.current && velocity.current.length() > 2) {
-        onSwing(velocity.current.clone());
-      }
-      isDragging.current = false;
-      velocity.current.set(0, 0, 0);
-    };
-
-    const domElement = gl.domElement;
-    domElement.addEventListener('mousedown', handleMouseDown);
-    domElement.addEventListener('mousemove', handleMouseMove);
-    domElement.addEventListener('mouseup', handleMouseUp);
-    domElement.addEventListener('mouseleave', handleMouseUp);
-
-    // Touch support
-    const handleTouchStart = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      isDragging.current = true;
-      previousMousePos.current.set(
-        (touch.clientX / window.innerWidth) * 2 - 1,
-        -(touch.clientY / window.innerHeight) * 2 + 1
-      );
-      currentMousePos.current.copy(previousMousePos.current);
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      currentMousePos.current.set(
-        (touch.clientX / window.innerWidth) * 2 - 1,
-        -(touch.clientY / window.innerHeight) * 2 + 1
-      );
-
-      if (isDragging.current) {
-        const deltaX = currentMousePos.current.x - previousMousePos.current.x;
-        const deltaY = currentMousePos.current.y - previousMousePos.current.y;
-        velocity.current.set(deltaX * 50, deltaY * 50, 0);
-
-        targetRotation.current.set(
-          -0.3 + currentMousePos.current.y * 1.2,
-          currentMousePos.current.x * 1.5,
-          0.5 - currentMousePos.current.x * 0.8
-        );
-
-        targetPosition.current.set(
-          1 + currentMousePos.current.x * 1.5,
-          -1 + currentMousePos.current.y * 1.2,
-          1
-        );
-
-        previousMousePos.current.copy(currentMousePos.current);
-      }
-    };
-
-    const handleTouchEnd = () => {
-      if (isDragging.current && velocity.current.length() > 2) {
-        onSwing(velocity.current.clone());
-      }
-      isDragging.current = false;
-      velocity.current.set(0, 0, 0);
-    };
-
-    domElement.addEventListener('touchstart', handleTouchStart);
-    domElement.addEventListener('touchmove', handleTouchMove);
-    domElement.addEventListener('touchend', handleTouchEnd);
-
-    return () => {
-      domElement.removeEventListener('mousedown', handleMouseDown);
-      domElement.removeEventListener('mousemove', handleMouseMove);
-      domElement.removeEventListener('mouseup', handleMouseUp);
-      domElement.removeEventListener('mouseleave', handleMouseUp);
-      domElement.removeEventListener('touchstart', handleTouchStart);
-      domElement.removeEventListener('touchmove', handleTouchMove);
-      domElement.removeEventListener('touchend', handleTouchEnd);
-    };
-  }, [gl, onSwing]);
-
-  useFrame(() => {
-    if (!swordRef.current) return;
-
-    // Smooth interpolation for sword movement
-    swordRef.current.rotation.x = THREE.MathUtils.lerp(
-      swordRef.current.rotation.x,
-      targetRotation.current.x,
-      0.15
-    );
-    swordRef.current.rotation.y = THREE.MathUtils.lerp(
-      swordRef.current.rotation.y,
-      targetRotation.current.y,
-      0.15
-    );
-    swordRef.current.rotation.z = THREE.MathUtils.lerp(
-      swordRef.current.rotation.z,
-      targetRotation.current.z,
-      0.15
-    );
-
-    swordRef.current.position.x = THREE.MathUtils.lerp(
-      swordRef.current.position.x,
-      targetPosition.current.x,
-      0.15
-    );
-    swordRef.current.position.y = THREE.MathUtils.lerp(
-      swordRef.current.position.y,
-      targetPosition.current.y,
-      0.15
-    );
-
-    // Decay velocity when not dragging
-    if (!isDragging.current) {
-      velocity.current.multiplyScalar(0.95);
-    }
-  });
-
-  // Clone the scene and set up materials
+  // Clone the scene
   const clonedScene = scene.clone();
   clonedScene.traverse((child) => {
     if (child instanceof THREE.Mesh) {
@@ -186,39 +27,40 @@ const Sword = ({
     }
   });
 
+  useFrame(() => {
+    if (!swordRef.current) return;
+    // Direct position update - sword follows mouse exactly
+    swordRef.current.position.x = mousePos.x;
+    swordRef.current.position.y = mousePos.y;
+    swordRef.current.rotation.z = rotation;
+  });
+
   return (
-    <group ref={swordRef} position={[1, -1, 1]} rotation={[-0.3, 0, 0.5]}>
+    <group ref={swordRef} position={[0, 0, 0]}>
       <Center>
-        <primitive object={clonedScene} scale={1.5} />
+        <primitive object={clonedScene} scale={0.5} rotation={[0, 0, -Math.PI / 4]} />
       </Center>
     </group>
   );
 };
 
-// Main game scene
+// Game scene with orthographic camera for 2D-like rendering
 const GameScene = ({
-  onHit,
-  hitCount,
+  mousePos,
+  rotation,
 }: {
-  onHit: () => void;
-  hitCount: number;
+  mousePos: { x: number; y: number };
+  rotation: number;
 }) => {
-  const handleSwing = (velocity: THREE.Vector3) => {
-    // Check if swing is powerful enough
-    if (velocity.length() > 3 && hitCount < 3) {
-      onHit();
-    }
-  };
-
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5]} intensity={1.2} castShadow />
+      <OrthographicCamera makeDefault position={[0, 0, 10]} zoom={100} />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[5, 5, 5]} intensity={1.2} />
       <pointLight position={[-3, 2, 2]} intensity={0.8} color="#ff6666" />
-      <pointLight position={[3, -1, 3]} intensity={0.4} color="#ffffff" />
 
       <Suspense fallback={null}>
-        <Sword onSwing={handleSwing} />
+        <Sword2D mousePos={mousePos} rotation={rotation} />
       </Suspense>
     </>
   );
@@ -286,82 +128,88 @@ const VictoryScreen = ({ isOpen }: { isOpen: boolean }) => {
   );
 };
 
-// Robot using the HeroRobot image
-const RobotImage = ({
-  isHit,
-  hitCount,
-}: {
-  isHit: boolean;
-  hitCount: number;
-}) => {
-  const robotRef = useRef<HTMLDivElement>(null);
-  const [shakeClass, setShakeClass] = useState('');
+// Robot using the HeroRobot image - with forwardRef for hit detection
+const RobotImage = forwardRef<HTMLDivElement, { isHit: boolean; hitCount: number }>(
+  ({ isHit, hitCount }, ref) => {
+    const [shakeClass, setShakeClass] = useState('');
 
-  useEffect(() => {
-    if (hitCount > 0 && !isHit) {
-      setShakeClass('animate-shake');
-      const timer = setTimeout(() => setShakeClass(''), 300);
-      return () => clearTimeout(timer);
+    useEffect(() => {
+      if (hitCount > 0 && !isHit) {
+        setShakeClass('animate-shake');
+        const timer = setTimeout(() => setShakeClass(''), 300);
+        return () => clearTimeout(timer);
+      }
+    }, [hitCount, isHit]);
+
+    if (isHit) {
+      return (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+          <div className="relative animate-explode">
+            {/* Explosion fragments */}
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-6 h-6 bg-empire-red rounded"
+                style={{
+                  animation: `explode-fragment 0.8s ease-out forwards`,
+                  animationDelay: `${i * 0.03}s`,
+                  transform: `rotate(${i * 30}deg) translateY(-20px)`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      );
     }
-  }, [hitCount, isHit]);
 
-  if (isHit) {
     return (
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
-        <div className="relative animate-explode">
-          {/* Explosion fragments */}
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-6 h-6 bg-empire-red rounded"
-              style={{
-                animation: `explode-fragment 0.8s ease-out forwards`,
-                animationDelay: `${i * 0.03}s`,
-                transform: `rotate(${i * 30}deg) translateY(-20px)`,
-              }}
-            />
-          ))}
+      <div
+        ref={ref}
+        className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform ${shakeClass}`}
+        style={{
+          filter: `hue-rotate(${hitCount * 30}deg) brightness(${1 + hitCount * 0.2})`,
+        }}
+      >
+        <img
+          src="/images/HeroRobot.png"
+          alt="Robot de l'Empire"
+          className="w-48 h-auto md:w-64 lg:w-80 object-contain drop-shadow-[0_0_30px_rgba(255,45,45,0.6)]"
+          style={{
+            animation: 'float 3s ease-in-out infinite',
+          }}
+        />
+        {/* Health bar */}
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-24 h-2 bg-black/60 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-empire-red transition-all duration-300"
+            style={{ width: `${((3 - hitCount) / 3) * 100}%` }}
+          />
         </div>
       </div>
     );
   }
-
-  return (
-    <div
-      ref={robotRef}
-      className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transition-transform ${shakeClass}`}
-      style={{
-        filter: `hue-rotate(${hitCount * 30}deg) brightness(${1 + hitCount * 0.2})`,
-      }}
-    >
-      <img
-        src="/images/HeroRobot.png"
-        alt="Robot de l'Empire"
-        className="w-32 h-auto md:w-40 object-contain drop-shadow-[0_0_20px_rgba(255,45,45,0.5)]"
-        style={{
-          animation: 'float 3s ease-in-out infinite',
-        }}
-      />
-      {/* Health bar */}
-      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-24 h-2 bg-black/60 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-empire-red transition-all duration-300"
-          style={{ width: `${((3 - hitCount) / 3) * 100}%` }}
-        />
-      </div>
-    </div>
-  );
-};
+);
 
 // Main component
 export const SwordGame = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const gameAreaRef = useRef<HTMLDivElement>(null);
+  const robotRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [hitCount, setHitCount] = useState(0);
   const [victory, setVictory] = useState(false);
+
+  // Mouse position for sword (in Three.js coordinates)
+  const [mousePos, setMousePos] = useState({ x: 0, y: -2 });
+  const [swordRotation, setSwordRotation] = useState(0);
+
+  // Track velocity for hit detection
+  const lastMousePos = useRef({ x: 0, y: 0 });
+  const velocity = useRef({ x: 0, y: 0 });
+  const lastHitTime = useRef(0);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -372,24 +220,17 @@ export const SwordGame = () => {
         start: 'top 80%',
         onEnter: () => {
           setIsVisible(true);
-          // Animate container flying in
           if (containerRef.current) {
             gsap.fromTo(
               containerRef.current,
-              {
-                x: '100vw',
-                rotation: 360,
-                scale: 0.3,
-              },
+              { x: '100vw', rotation: 360, scale: 0.3 },
               {
                 x: 0,
                 rotation: 0,
                 scale: 1,
                 duration: 1.2,
                 ease: 'power3.out',
-                onComplete: () => {
-                  setShowInstructions(true);
-                },
+                onComplete: () => setShowInstructions(true),
               }
             );
           }
@@ -400,19 +241,66 @@ export const SwordGame = () => {
     return () => ctx.revert();
   }, []);
 
+  // Mouse/touch tracking for sword
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    if (!gameAreaRef.current || !gameStarted || victory) return;
+
+    const rect = gameAreaRef.current.getBoundingClientRect();
+    // Convert screen coords to Three.js orthographic coords (-5 to 5 range roughly)
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 10;
+    const y = -((e.clientY - rect.top) / rect.height - 0.5) * 8;
+
+    // Calculate velocity
+    velocity.current.x = x - lastMousePos.current.x;
+    velocity.current.y = y - lastMousePos.current.y;
+
+    // Calculate rotation based on movement direction
+    const speed = Math.sqrt(velocity.current.x ** 2 + velocity.current.y ** 2);
+    if (speed > 0.1) {
+      const angle = Math.atan2(velocity.current.y, velocity.current.x);
+      setSwordRotation(angle + Math.PI / 4);
+    }
+
+    lastMousePos.current = { x, y };
+    setMousePos({ x, y });
+
+    // Check for hit with robot
+    checkHit(e.clientX, e.clientY, speed);
+  }, [gameStarted, victory]);
+
+  const checkHit = useCallback((screenX: number, screenY: number, speed: number) => {
+    if (!robotRef.current || hitCount >= 3) return;
+
+    const now = Date.now();
+    if (now - lastHitTime.current < 500) return; // Cooldown between hits
+
+    const robotRect = robotRef.current.getBoundingClientRect();
+    const robotCenterX = robotRect.left + robotRect.width / 2;
+    const robotCenterY = robotRect.top + robotRect.height / 2;
+
+    // Check if sword is near robot and moving fast enough
+    const distance = Math.sqrt(
+      (screenX - robotCenterX) ** 2 +
+      (screenY - robotCenterY) ** 2
+    );
+
+    const hitRadius = Math.max(robotRect.width, robotRect.height) * 0.6;
+
+    if (distance < hitRadius && speed > 0.3) {
+      lastHitTime.current = now;
+      setHitCount(prev => {
+        const newCount = prev + 1;
+        if (newCount >= 3) {
+          setTimeout(() => setVictory(true), 800);
+        }
+        return newCount;
+      });
+    }
+  }, [hitCount]);
+
   const handleStartGame = () => {
     setShowInstructions(false);
     setGameStarted(true);
-  };
-
-  const handleHit = () => {
-    setHitCount((prev) => {
-      const newCount = prev + 1;
-      if (newCount >= 3) {
-        setTimeout(() => setVictory(true), 800);
-      }
-      return newCount;
-    });
   };
 
   return (
@@ -462,24 +350,29 @@ export const SwordGame = () => {
       {isVisible && (
         <div
           ref={containerRef}
-          className="relative w-full max-w-3xl aspect-[16/10] mx-4"
+          className="absolute inset-0"
           style={{ transform: 'translateX(100vw)' }}
         >
-          {/* Game container with border */}
-          <div className="absolute inset-0 rounded-lg border-4 border-empire-red overflow-hidden bg-gradient-to-b from-gray-900 to-black">
+          {/* Full screen game container */}
+          <div
+            ref={gameAreaRef}
+            className="absolute inset-0 overflow-hidden bg-gradient-to-b from-gray-900 to-black cursor-none"
+            onPointerMove={handlePointerMove}
+          >
             {gameStarted && (
               <>
-                {/* 3D Canvas for sword */}
-                <Canvas
-                  camera={{ position: [0, 0, 5], fov: 45 }}
-                  style={{ width: '100%', height: '100%' }}
-                >
-                  <GameScene onHit={handleHit} hitCount={hitCount} />
+                {/* 3D Canvas for sword - renders in 2D orthographic view */}
+                <Canvas style={{ width: '100%', height: '100%' }}>
+                  <GameScene mousePos={mousePos} rotation={swordRotation} />
                 </Canvas>
 
                 {/* Robot image overlay */}
                 {hitCount < 3 && (
-                  <RobotImage isHit={hitCount >= 3} hitCount={hitCount} />
+                  <RobotImage
+                    ref={robotRef}
+                    isHit={hitCount >= 3}
+                    hitCount={hitCount}
+                  />
                 )}
               </>
             )}
@@ -507,12 +400,6 @@ export const SwordGame = () => {
               </div>
             )}
           </div>
-
-          {/* Decorative corners */}
-          <div className="absolute -top-2 -left-2 w-6 h-6 border-t-4 border-l-4 border-empire-red" />
-          <div className="absolute -top-2 -right-2 w-6 h-6 border-t-4 border-r-4 border-empire-red" />
-          <div className="absolute -bottom-2 -left-2 w-6 h-6 border-b-4 border-l-4 border-empire-red" />
-          <div className="absolute -bottom-2 -right-2 w-6 h-6 border-b-4 border-r-4 border-empire-red" />
         </div>
       )}
 
