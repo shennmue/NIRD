@@ -4,89 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Random glitch text component - more chaotic, no reveal
-const GlitchText = ({ children }: { children: string }) => {
-  const textRef = useRef<HTMLSpanElement>(null);
-  const originalText = children;
-
-  useEffect(() => {
-    if (!textRef.current) return;
-
-    const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/~`01';
-    let timeouts: ReturnType<typeof setTimeout>[] = [];
-
-    const doRandomGlitch = () => {
-      if (!textRef.current) return;
-
-      // Random number of glitches (1-4)
-      const numGlitches = Math.floor(Math.random() * 4) + 1;
-
-      for (let g = 0; g < numGlitches; g++) {
-        const glitchDelay = Math.random() * 100;
-
-        const timeout1 = setTimeout(() => {
-          if (!textRef.current) return;
-
-          // Randomly corrupt some characters
-          const corruptionAmount = Math.random() * 0.4 + 0.1; // 10-50% of chars
-          textRef.current.innerText = originalText
-            .split('')
-            .map((char) => {
-              if (char === ' ') return ' ';
-              if (Math.random() < corruptionAmount) {
-                return glitchChars[Math.floor(Math.random() * glitchChars.length)];
-              }
-              return char;
-            })
-            .join('');
-
-          // Random x offset for extra chaos
-          if (textRef.current) {
-            textRef.current.style.transform = `translateX(${(Math.random() - 0.5) * 4}px)`;
-          }
-        }, glitchDelay);
-
-        // Restore after short random delay
-        const restoreDelay = glitchDelay + 30 + Math.random() * 80;
-        const timeout2 = setTimeout(() => {
-          if (!textRef.current) return;
-          textRef.current.innerText = originalText;
-          textRef.current.style.transform = 'translateX(0)';
-        }, restoreDelay);
-
-        timeouts.push(timeout1, timeout2);
-      }
-    };
-
-    // Schedule random glitches
-    const scheduleGlitch = () => {
-      const delay = Math.random() * 3000 + 1500; // 1.5-4.5 seconds
-      const timeout = setTimeout(() => {
-        doRandomGlitch();
-        scheduleGlitch();
-      }, delay);
-      timeouts.push(timeout);
-    };
-
-    // Initial glitch after a moment
-    const initialTimeout = setTimeout(() => {
-      doRandomGlitch();
-      scheduleGlitch();
-    }, Math.random() * 1000 + 500);
-    timeouts.push(initialTimeout);
-
-    return () => {
-      timeouts.forEach(clearTimeout);
-    };
-  }, [originalText]);
-
-  return (
-    <span ref={textRef} className="inline-block">
-      {children}
-    </span>
-  );
-};
-
 // Counting animation for stats
 const CountUp = ({ target, suffix = '' }: { target: number; suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -253,7 +170,7 @@ export const EmpireIntro = () => {
         className="min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-12 relative z-10"
       >
         <h2 className="hero-animate font-display text-[clamp(2.5rem,10vw,7rem)] text-empire-red text-glow-red mb-8 leading-tight">
-          <GlitchText>L'EMPIRE NUMÉRIQUE</GlitchText>
+          L'EMPIRE NUMÉRIQUE
         </h2>
         <p className="hero-animate font-body text-xl md:text-3xl text-text-muted-light leading-relaxed mb-6 font-medium max-w-3xl">
           Votre ordinateur fonctionne parfaitement...
@@ -290,7 +207,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-6 leading-tight">
-              <GlitchText>Obsolescence Programmée</GlitchText>
+              Obsolescence Programmée
             </h3>
             <p className="font-body text-base md:text-lg text-text-muted-light leading-relaxed mb-4">
               <span className="text-text-light font-semibold">C'est quoi ?</span> C'est quand un produit est conçu pour
@@ -309,7 +226,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-6 leading-tight">
-              <GlitchText>Vos Données, Leur Trésor</GlitchText>
+              Vos Données, Leur Trésor
             </h3>
             <p className="font-body text-base md:text-lg text-text-muted-light leading-relaxed mb-4">
               <span className="text-text-light font-semibold">C'est quoi ?</span> Chaque clic, chaque recherche,
@@ -327,7 +244,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-4 leading-tight">
-              <GlitchText>Désastre Écologique</GlitchText>
+              Désastre Écologique
             </h3>
             <p className="font-display text-[clamp(3rem,12vw,8rem)] text-empire-red text-glow-red leading-none my-4">
               <CountUp target={75} suffix="%" />
@@ -348,7 +265,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-4 leading-tight">
-              <GlitchText>La Facture Salée</GlitchText>
+              La Facture Salée
             </h3>
             <p className="font-display text-[clamp(3rem,12vw,8rem)] text-empire-red text-glow-red leading-none my-4">
               <CountUp target={8} suffix="M€" />
@@ -369,7 +286,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-6 leading-tight">
-              <GlitchText>Qui Décide Vraiment ?</GlitchText>
+              Qui Décide Vraiment ?
             </h3>
             <p className="font-body text-base md:text-lg text-text-muted-light leading-relaxed mb-4">
               Quand Microsoft décide d'arrêter Windows 10, avez-vous votre mot à dire ?
@@ -388,7 +305,7 @@ export const EmpireIntro = () => {
         <div className="empire-card min-h-[60vh] flex items-center justify-center px-6 md:px-12 py-12">
           <div className="w-full max-w-xl text-center">
             <h3 className="font-display text-2xl md:text-4xl text-empire-red mb-6 leading-tight">
-              <GlitchText>Les Oubliés du Numérique</GlitchText>
+              Les Oubliés du Numérique
             </h3>
             <p className="font-body text-base md:text-lg text-text-muted-light leading-relaxed mb-4">
               Quand il faut racheter un PC tous les 5 ans, les familles modestes décrochent.
@@ -408,7 +325,7 @@ export const EmpireIntro = () => {
       {/* Call to Action */}
       <div className="min-h-[40vh] flex items-center justify-center px-6 md:px-12 relative z-10">
         <p className="font-display text-[clamp(1.5rem,5vw,3.5rem)] text-empire-red text-glow-red leading-tight text-center max-w-3xl">
-          <GlitchText>Et si on reprenait le contrôle ?</GlitchText>
+          Et si on reprenait le contrôle ?
         </p>
       </div>
 
