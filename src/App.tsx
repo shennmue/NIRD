@@ -1,4 +1,4 @@
-import { Hero, EmpireIntro, Transition, VillageNIRD } from './views';
+import { Hero, EmpireIntro, SwordGame, Transition, VillageNIRD } from './views';
 import { useLenis, useScrollbarColor } from './hooks';
 
 function App() {
@@ -9,6 +9,7 @@ function App() {
     <main>
       <Hero />
       <EmpireIntro />
+      <SwordGame />
       <Transition />
       <VillageNIRD />
 
