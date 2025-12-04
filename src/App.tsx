@@ -1,33 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const heroRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const cityRef = useRef<HTMLImageElement>(null)
+  const robotRef = useRef<HTMLImageElement>(null)
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+
+      // City slides in from bottom
+      tl.to(cityRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+      })
+
+      // Robot slides in from bottom (appears behind city)
+      tl.to(robotRef.current, {
+        y: 0,
+        opacity: 1,
+        scale: 0.6,
+        duration: 1,
+      }, '-=0.6')
+
+      // Title slides in from top
+      tl.to(titleRef.current, {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+      }, '-=0.5')
+
+    }, heroRef)
+
+    return () => ctx.revert()
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <section className="hero" ref={heroRef}>
+        <div className="hero-content">
+          <h1 className="hero-title" ref={titleRef}>
+            NIRD
+          </h1>
+
+          <img
+            ref={cityRef}
+            src="/images/city.png"
+            alt="Cyberpunk City"
+            className="hero-city"
+          />
+
+          <img
+            ref={robotRef}
+            src="/images/HeroRobot.png"
+            alt="Attack Robot"
+            className="hero-robot"
+          />
+        </div>
+
+        <div className="hero-vignette" />
+        <div className="hero-scanlines" />
+      </section>
     </>
   )
 }
