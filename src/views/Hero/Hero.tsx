@@ -1,7 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-export const Hero = () => {
+interface HeroProps {
+  onComplete?: () => void;
+}
+
+export const Hero = ({ onComplete }: HeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const cityRef = useRef<HTMLImageElement>(null);
@@ -9,7 +13,10 @@ export const Hero = () => {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      const tl = gsap.timeline({
+        defaults: { ease: 'power3.out' },
+        onComplete,
+      });
 
       tl.to(cityRef.current, {
         y: 0,
@@ -37,15 +44,19 @@ export const Hero = () => {
         },
         '-=0.5'
       );
+
+      // Hold for a moment before transitioning
+      tl.to({}, { duration: 1.5 });
     }, heroRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [onComplete]);
 
   return (
     <section
       ref={heroRef}
-      className="relative w-full h-screen overflow-hidden bg-bg-primary"
+      id="hero"
+      className="relative w-full h-screen overflow-hidden bg-empire-bg"
     >
       {/* Grid background */}
       <div
@@ -62,7 +73,7 @@ export const Hero = () => {
       <div className="relative w-full h-full flex flex-col items-center justify-center z-1">
         <h1
           ref={titleRef}
-          className="font-display text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-widest text-text-primary text-glow-red absolute top-[10%] z-10 opacity-0 -translate-y-[100px]"
+          className="font-display text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-widest text-text-light text-glow-red absolute top-[10%] z-10 opacity-0 -translate-y-[100px]"
         >
           NIRD
         </h1>
@@ -86,7 +97,7 @@ export const Hero = () => {
       <div
         className="absolute inset-0 pointer-events-none z-5"
         style={{
-          background: 'radial-gradient(ellipse at center, transparent 0%, var(--color-bg-primary) 100%)',
+          background: 'radial-gradient(ellipse at center, transparent 0%, var(--color-empire-bg) 100%)',
         }}
       />
 

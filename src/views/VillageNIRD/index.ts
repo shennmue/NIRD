@@ -1,0 +1,1 @@
+export { VillageNIRD } from './VillageNIRD';
