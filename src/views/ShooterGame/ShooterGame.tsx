@@ -41,8 +41,6 @@ export const ShooterGame = () => {
 
   const GAME_HEIGHT = 500;
   const SHIP_Y = GAME_HEIGHT - 80;
-  const ENEMY_SIZE = 60;
-  const BULLET_SIZE = 10;
   const WIN_SCORE = 10;
 
   // Text fade in animation (from Transition)
