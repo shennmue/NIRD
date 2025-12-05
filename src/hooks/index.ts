@@ -1,3 +1,3 @@
 export { useScrollAnimation } from './useScrollAnimation';
-export { useLenis } from './useLenis';
+export { useLenis, stopScroll, startScroll } from './useLenis';
 export { useScrollbarColor } from './useScrollbarColor';

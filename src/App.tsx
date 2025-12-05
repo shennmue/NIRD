@@ -1,4 +1,4 @@
-import { Hero, EmpireIntro, SwordGame, Transition, VillageNIRD } from './views';
+import { Hero, EmpireIntro, SwordGame, ShooterGame, VillageNIRD } from './views';
 import { useLenis, useScrollbarColor } from './hooks';
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <Hero />
       <EmpireIntro />
       <SwordGame />
-      <Transition />
+      <ShooterGame />
       <VillageNIRD />
 
       <footer className="min-h-[50vh] bg-village-bg flex items-center justify-center">

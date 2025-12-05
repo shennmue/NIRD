@@ -4,6 +4,7 @@ import { useGLTF, Center, OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { stopScroll, startScroll } from '../../hooks';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -211,6 +212,7 @@ export const SwordGame = () => {
   const velocity = useRef({ x: 0, y: 0 });
   const lastHitTime = useRef(0);
   const hasTriggered = useRef(false);
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -218,56 +220,58 @@ export const SwordGame = () => {
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 30%', // Trigger when user has scrolled past "et si on reprenait le controle"
-        end: 'bottom top',
+        start: 'top 80%',
+        end: 'bottom 20%',
         onEnter: () => {
+          setIsInView(true);
           if (hasTriggered.current) return;
           hasTriggered.current = true;
           setIsVisible(true);
         },
         onEnterBack: () => {
+          setIsInView(true);
           if (hasTriggered.current) return;
           hasTriggered.current = true;
           setIsVisible(true);
         },
+        onLeave: () => setIsInView(false),
+        onLeaveBack: () => setIsInView(false),
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Show instructions when visible (no animation)
+  // Animate container when it becomes visible
   useEffect(() => {
-    if (!isVisible) return;
-    setShowInstructions(true);
+    if (!isVisible || !containerRef.current) return;
+
+    gsap.fromTo(
+      containerRef.current,
+      { x: '100vw', rotation: 360, scale: 0.3 },
+      {
+        x: 0,
+        rotation: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power3.out',
+        onComplete: () => setShowInstructions(true),
+      }
+    );
   }, [isVisible]);
 
-  // Block scroll when instructions are shown, unblock only after victory
+  // Disable scroll while game is active (from instructions to victory) AND in view
   useEffect(() => {
-    const lenis = (window as any).lenis;
-
-    if (showInstructions && !victory) {
-      // Block native scroll
-      document.body.style.overflow = 'hidden';
-      // Stop Lenis smooth scroll
-      if (lenis) {
-        lenis.stop();
-      }
-    } else if (victory) {
-      // Restore scroll only after victory
-      document.body.style.overflow = '';
-      if (lenis) {
-        lenis.start();
-      }
+    if (isInView && (showInstructions || (gameStarted && !victory))) {
+      stopScroll();
+    } else {
+      startScroll();
     }
 
     return () => {
-      document.body.style.overflow = '';
-      if (lenis) {
-        lenis.start();
-      }
+      startScroll();
     };
-  }, [showInstructions, victory]);
+  }, [showInstructions, gameStarted, victory, isInView]);
 
   // Mouse/touch tracking for sword
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
@@ -379,6 +383,7 @@ export const SwordGame = () => {
         <div
           ref={containerRef}
           className="absolute inset-0"
+          style={{ transform: 'translateX(100vw)' }}
         >
           {/* Full screen game container */}
           <div

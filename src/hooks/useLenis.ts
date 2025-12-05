@@ -5,6 +5,23 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Global Lenis instance for scroll control
+let globalLenis: Lenis | null = null;
+
+export const stopScroll = () => {
+  if (globalLenis) {
+    globalLenis.stop();
+  }
+  document.body.style.overflow = 'hidden';
+};
+
+export const startScroll = () => {
+  if (globalLenis) {
+    globalLenis.start();
+  }
+  document.body.style.overflow = '';
+};
+
 export const useLenis = () => {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -18,9 +35,7 @@ export const useLenis = () => {
     });
 
     lenisRef.current = lenis;
-
-    // Make Lenis instance globally accessible for SwordGame
-    (window as any).lenis = lenis;
+    globalLenis = lenis;
 
     // Connect Lenis to GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
@@ -34,7 +49,7 @@ export const useLenis = () => {
     return () => {
       lenis.destroy();
       lenisRef.current = null;
-      (window as any).lenis = null;
+      globalLenis = null;
     };
   }, []);
 
