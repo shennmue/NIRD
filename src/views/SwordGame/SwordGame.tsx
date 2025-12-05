@@ -400,11 +400,19 @@ export const SwordGame = () => {
 
                 {/* Robot image overlay */}
                 {hitCount < 3 && (
-                  <RobotImage
-                    ref={robotRef}
-                    isHit={hitCount >= 3}
-                    hitCount={hitCount}
-                  />
+                  <>
+                    {/* BIG TECH label above robot */}
+                    <div className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-32 pointer-events-none z-10">
+                      <h2 className="font-display text-5xl md:text-6xl text-empire-red text-glow-red">
+                        BIG TECH
+                      </h2>
+                    </div>
+                    <RobotImage
+                      ref={robotRef}
+                      isHit={hitCount >= 3}
+                      hitCount={hitCount}
+                    />
+                  </>
                 )}
               </>
             )}
