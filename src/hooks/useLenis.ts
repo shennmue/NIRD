@@ -19,6 +19,9 @@ export const useLenis = () => {
 
     lenisRef.current = lenis;
 
+    // Make Lenis instance globally accessible for SwordGame
+    (window as any).lenis = lenis;
+
     // Connect Lenis to GSAP ScrollTrigger
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -31,6 +34,7 @@ export const useLenis = () => {
     return () => {
       lenis.destroy();
       lenisRef.current = null;
+      (window as any).lenis = null;
     };
   }, []);
 

@@ -218,7 +218,7 @@ export const SwordGame = () => {
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top bottom',
+        start: 'top 30%', // Trigger when user has scrolled past "et si on reprenait le controle"
         end: 'bottom top',
         onEnter: () => {
           if (hasTriggered.current) return;
@@ -236,23 +236,38 @@ export const SwordGame = () => {
     return () => ctx.revert();
   }, []);
 
-  // Animate container when it becomes visible
+  // Show instructions when visible (no animation)
   useEffect(() => {
-    if (!isVisible || !containerRef.current) return;
-
-    gsap.fromTo(
-      containerRef.current,
-      { x: '100vw', rotation: 360, scale: 0.3 },
-      {
-        x: 0,
-        rotation: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: 'power3.out',
-        onComplete: () => setShowInstructions(true),
-      }
-    );
+    if (!isVisible) return;
+    setShowInstructions(true);
   }, [isVisible]);
+
+  // Block scroll when instructions are shown, unblock only after victory
+  useEffect(() => {
+    const lenis = (window as any).lenis;
+
+    if (showInstructions && !victory) {
+      // Block native scroll
+      document.body.style.overflow = 'hidden';
+      // Stop Lenis smooth scroll
+      if (lenis) {
+        lenis.stop();
+      }
+    } else if (victory) {
+      // Restore scroll only after victory
+      document.body.style.overflow = '';
+      if (lenis) {
+        lenis.start();
+      }
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+      if (lenis) {
+        lenis.start();
+      }
+    };
+  }, [showInstructions, victory]);
 
   // Mouse/touch tracking for sword
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
@@ -364,7 +379,6 @@ export const SwordGame = () => {
         <div
           ref={containerRef}
           className="absolute inset-0"
-          style={{ transform: 'translateX(100vw)' }}
         >
           {/* Full screen game container */}
           <div
