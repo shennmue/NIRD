@@ -88,7 +88,7 @@ export const Hero = () => {
           ref={titleRef}
           className="font-display text-[clamp(3rem,10vw,8rem)] font-black uppercase tracking-widest text-text-light text-glow-red absolute top-[10%] z-1 opacity-0 -translate-y-[100px]"
         >
-          NIRD
+          BIG TECH REVOLUTION
         </h1>
 
         <img

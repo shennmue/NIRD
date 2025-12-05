@@ -175,31 +175,48 @@ export const Decathlon = () => {
     console.log('🏋️ Starting exercise generation for profile:', profile);
     setIsLoading(true);
 
+    // Créer un seed unique basé sur le profil pour avoir des résultats différents
+    const profileSeed = `${profile.frequency}-${profile.duration}-${profile.level}-${profile.goal}-${profile.location}`;
+    const timestamp = Date.now();
+
     const prompt = `
-Profil utilisateur Decathlon:
+Tu es un coach sportif Decathlon expert. Analyse ce profil UNIQUE et propose des exercices PERSONNALISÉS et DIFFÉRENTS à chaque fois.
+
+Profil utilisateur (ID: ${profileSeed}-${timestamp}):
 - Fréquence: ${profile.frequency} fois par semaine
 - Durée: ${profile.duration} minutes
 - Niveau: ${translateLevel(profile.level)}
 - Objectif: ${translateGoal(profile.goal)}
 - Lieu: ${translateLocation(profile.location)}
 
-Recommande EXACTEMENT 4 exercices et donne un insight sur le profil.
+IMPORTANT:
+- Varie tes recommandations selon le profil (ne propose PAS toujours les mêmes exercices)
+- Si l'objectif est "Perte de poids" → privilégie les exercices CARDIO intenses (burpees, jumping jacks, mountain climbers, corde à sauter)
+- Si l'objectif est "Prise de muscle" → privilégie les exercices de FORCE (pompes, squats, dips, tractions)
+- Si l'objectif est "Améliorer cardio" → privilégie COURSE, VÉLO, sprint intervals, high knees
+- Si l'objectif est "Souplesse" → privilégie YOGA, étirements jambes, cat-cow stretch
+- Si débutant → exercices simples et progressifs
+- Si expert → exercices complexes et intensifs
+- Si "À la maison" → exercices au poids du corps
+- Si "En salle" → exercices avec matériel
+
+Recommande EXACTEMENT 4 exercices ADAPTÉS au profil et donne un insight personnalisé.
 
 Format JSON:
 {
-    "insight": "Analyse personnalisée...",
+    "insight": "Analyse personnalisée du profil en 2-3 phrases courtes",
     "exercises": [
         {
-            "name": "Nom",
-            "description": "Description détaillée",
-            "duration": "3 séries de 12",
+            "name": "Nom de l'exercice",
+            "description": "Description détaillée et motivante",
+            "duration": "X séries de Y répétitions OU X minutes",
             "level": "beginner|intermediate|advanced",
             "category": "Cardio|Force|Souplesse|Mixte"
         }
     ]
 }
 
-Réponds UNIQUEMENT avec le JSON.`;
+Réponds UNIQUEMENT avec le JSON, sans markdown.`;
 
     try {
       console.log('🔄 Calling Groq API...');
@@ -248,39 +265,150 @@ Réponds UNIQUEMENT avec le JSON.`;
       }
     } catch (error) {
       console.error('❌ Error generating exercises:', error);
-      // Fallback exercises
-      console.log('🔄 Using fallback exercises');
-      setAiInsight("Excellent profil sportif ! Continuons avec ces exercices adaptés.");
-      const fallbackExercises = [
-        {
-          name: 'Pompes',
-          description: 'Exercice fondamental pour développer les pectoraux, triceps et épaules. Peut être adapté à tous les niveaux.',
-          duration: '4 séries de 12-15 répétitions',
-          level: 'beginner',
-          category: 'Force'
-        },
-        {
-          name: 'Squats',
-          description: 'Le roi des exercices pour les jambes et les fessiers. Renforce également la ceinture abdominale et améliore la posture.',
-          duration: '4 séries de 12 répétitions',
-          level: 'beginner',
-          category: 'Force'
-        },
-        {
-          name: 'Planche',
-          description: 'Renforce la ceinture abdominale et stabilise le corps. Exercice isométrique excellent pour le core.',
-          duration: '3 séries de 45-60 secondes',
-          level: 'intermediate',
-          category: 'Force'
-        },
-        {
-          name: 'Burpees',
-          description: 'Exercice complet qui combine squat, planche et saut. Brûle énormément de calories et améliore votre condition physique globale.',
-          duration: '3 séries de 10 répétitions',
-          level: 'intermediate',
-          category: 'Mixte'
-        }
-      ];
+      // Fallback exercises adaptés au profil
+      console.log('🔄 Using fallback exercises for profile:', profile);
+
+      let fallbackExercises: Array<{
+        name: string;
+        description: string;
+        duration: string;
+        level: string;
+        category: string;
+      }> = [];
+      let insight = "Excellent profil sportif ! Voici des exercices adaptés à vos objectifs.";
+
+      // Adapter les exercices selon l'objectif
+      if (profile.goal === 'weight-loss') {
+        insight = "Pour la perte de poids, privilégiez les exercices cardio intensifs qui brûlent un maximum de calories !";
+        fallbackExercises = [
+          {
+            name: 'Burpees',
+            description: 'Exercice complet haute intensité qui combine squat, planche et saut. Brûle énormément de calories.',
+            duration: '3 séries de 12 répétitions',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'Jumping Jacks',
+            description: 'Excellent pour augmenter rapidement le rythme cardiaque et brûler des calories.',
+            duration: '4 séries de 30 secondes',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'Mountain Climbers',
+            description: 'Exercice cardio intense qui sollicite tout le corps et booste le métabolisme.',
+            duration: '3 séries de 20 répétitions',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'Corde à sauter',
+            description: 'Classique du cardio, parfait pour brûler des calories rapidement.',
+            duration: '4 séries de 1 minute',
+            level: profile.level,
+            category: 'Cardio'
+          }
+        ];
+      } else if (profile.goal === 'muscle-gain') {
+        insight = "Pour la prise de muscle, concentrez-vous sur des exercices de force avec une charge progressive !";
+        fallbackExercises = [
+          {
+            name: 'Pompes',
+            description: 'Exercice fondamental pour développer les pectoraux, triceps et épaules.',
+            duration: '4 séries de 12-15 répétitions',
+            level: profile.level,
+            category: 'Force'
+          },
+          {
+            name: 'Squats',
+            description: 'Le roi des exercices pour les jambes et les fessiers. Développe la masse musculaire globale.',
+            duration: '4 séries de 12 répétitions',
+            level: profile.level,
+            category: 'Force'
+          },
+          {
+            name: 'Dips',
+            description: 'Excellent pour les triceps et les pectoraux. Renforce le haut du corps.',
+            duration: '3 séries de 10 répétitions',
+            level: profile.level,
+            category: 'Force'
+          },
+          {
+            name: 'Planche',
+            description: 'Renforce la ceinture abdominale et stabilise le core pour mieux soulever.',
+            duration: '3 séries de 45-60 secondes',
+            level: profile.level,
+            category: 'Force'
+          }
+        ];
+      } else if (profile.goal === 'cardio') {
+        insight = "Pour améliorer votre cardio, variez les exercices d'endurance et de fractionné !";
+        fallbackExercises = [
+          {
+            name: 'Course à pied',
+            description: 'Base de l\'entraînement cardio. Améliorez votre endurance progressivement.',
+            duration: '3 séries de 5 minutes',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'Sprint intervals',
+            description: 'Alternez sprints et récupération pour booster votre capacité cardio-vasculaire.',
+            duration: '8 séries de 30s sprint + 30s repos',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'High Knees',
+            description: 'Montées de genoux rapides pour améliorer la fréquence cardiaque et l\'agilité.',
+            duration: '4 séries de 30 secondes',
+            level: profile.level,
+            category: 'Cardio'
+          },
+          {
+            name: 'Vélo',
+            description: 'Excellent pour le cardio avec peu d\'impact sur les articulations.',
+            duration: '20-30 minutes',
+            level: profile.level,
+            category: 'Cardio'
+          }
+        ];
+      } else if (profile.goal === 'flexibility') {
+        insight = "Pour la souplesse et le bien-être, privilégiez les étirements et les postures de yoga !";
+        fallbackExercises = [
+          {
+            name: 'Yoga',
+            description: 'Séance complète pour améliorer souplesse, équilibre et relaxation.',
+            duration: '20-30 minutes',
+            level: profile.level,
+            category: 'Souplesse'
+          },
+          {
+            name: 'Étirements jambes',
+            description: 'Étirements des ischio-jambiers pour gagner en flexibilité.',
+            duration: '3 séries de 30 secondes par jambe',
+            level: profile.level,
+            category: 'Souplesse'
+          },
+          {
+            name: 'Cat-Cow Stretch',
+            description: 'Étirement du dos et de la colonne vertébrale, idéal pour la mobilité.',
+            duration: '3 séries de 10 répétitions',
+            level: profile.level,
+            category: 'Souplesse'
+          },
+          {
+            name: 'Planche',
+            description: 'Renforce le core tout en travaillant la stabilité et l\'équilibre.',
+            duration: '3 séries de 30-45 secondes',
+            level: profile.level,
+            category: 'Force'
+          }
+        ];
+      }
+
+      setAiInsight(insight);
 
       const fallbackWithImages = fallbackExercises.map(ex => {
         const imageData = getExerciseImageData(ex.name);
@@ -424,10 +552,11 @@ Réponds UNIQUEMENT avec le JSON.`;
           <div className="decathlon-modal" onClick={(e) => e.stopPropagation()}>
             <button className="decathlon-close" onClick={() => setIsOpen(false)}>✕</button>
 
-            <div className="decathlon-header">
-              <h1>DECATHLON</h1>
-              <p>Votre coach sportif personnel propulsé par l'IA</p>
-            </div>
+            <div className="decathlon-content-wrapper">
+              <div className="decathlon-header">
+                <h1>DECATHLON</h1>
+                <p>Votre coach sportif personnel propulsé par l'IA</p>
+              </div>
 
             {/* Intro Screen */}
             {currentStep === 'intro' && (
@@ -660,6 +789,7 @@ Réponds UNIQUEMENT avec le JSON.`;
                 </button>
               </div>
             )}
+            </div>
           </div>
         </div>
       )}
