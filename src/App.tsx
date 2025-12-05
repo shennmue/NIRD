@@ -1,5 +1,6 @@
 import { Hero, EmpireIntro, SwordGame, ShooterGame, VillageNIRD } from './views';
 import { useLenis, useScrollbarColor } from './hooks';
+import { Chatbot } from './components/Chatbot';
 
 function App() {
   useLenis();
@@ -18,6 +19,9 @@ function App() {
           NIRD - Numérique Inclusif, Responsable et Durable
         </p>
       </footer>
+
+      {/* Chatbot flottant */}
+      <Chatbot />
     </main>
   );
 }

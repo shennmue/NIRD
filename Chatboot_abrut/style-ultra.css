@@ -1,0 +1,627 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Grotesk:wght@300;400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #00f5ff;
+    --secondary: #ff00ff;
+    --accent: #ffff00;
+    --bg-dark: #0a0014;
+    --bg-card: #1a0f2e;
+    --text-light: #ffffff;
+    --glow: rgba(0, 245, 255, 0.5);
+}
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg-dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Fond animé cyberpunk */
+.space-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 50% 50%, rgba(138, 43, 226, 0.15), transparent 50%),
+        radial-gradient(ellipse at 80% 10%, rgba(255, 0, 255, 0.1), transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(0, 245, 255, 0.1), transparent 50%),
+        linear-gradient(180deg, #0a0014 0%, #1a0033 50%, #0a0014 100%);
+    z-index: 0;
+}
+
+/* Grille cyberpunk en arrière-plan */
+.space-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(50px); }
+}
+
+/* Particules flottantes */
+.particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0.6;
+    filter: blur(1px);
+    box-shadow: 0 0 10px var(--glow);
+    animation: float-particle 25s infinite ease-in-out;
+}
+
+@keyframes float-particle {
+    0%, 100% {
+        transform: translate3d(0, 0, 0);
+        opacity: 0;
+    }
+    10%, 90% {
+        opacity: 0.8;
+    }
+    50% {
+        transform: translate3d(var(--random-x, 100px), var(--random-y, -800px), 0);
+    }
+}
+
+/* Container principal ultra-moderne */
+.container {
+    background: linear-gradient(135deg, rgba(26, 15, 46, 0.95) 0%, rgba(10, 0, 20, 0.95) 100%);
+    border: 2px solid rgba(0, 245, 255, 0.3);
+    border-radius: 30px;
+    max-width: 950px;
+    width: 100%;
+    padding: 40px;
+    position: relative;
+    z-index: 2;
+    box-shadow:
+        0 0 50px rgba(0, 245, 255, 0.2),
+        0 0 100px rgba(255, 0, 255, 0.1),
+        inset 0 0 50px rgba(0, 245, 255, 0.05);
+    backdrop-filter: blur(20px);
+    animation: container-pulse 4s ease-in-out infinite;
+}
+
+@keyframes container-pulse {
+    0%, 100% {
+        box-shadow:
+            0 0 50px rgba(0, 245, 255, 0.2),
+            0 0 100px rgba(255, 0, 255, 0.1),
+            inset 0 0 50px rgba(0, 245, 255, 0.05);
+    }
+    50% {
+        box-shadow:
+            0 0 70px rgba(0, 245, 255, 0.4),
+            0 0 120px rgba(255, 0, 255, 0.2),
+            inset 0 0 60px rgba(0, 245, 255, 0.1);
+    }
+}
+
+/* Header cyberpunk */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.professor-avatar {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.avatar-circle {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    animation: avatar-glow 3s ease-in-out infinite;
+    box-shadow:
+        0 0 60px rgba(0, 245, 255, 0.6),
+        0 0 120px rgba(255, 0, 255, 0.4);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.avatar-circle:hover {
+    transform: scale(1.15) rotate(10deg);
+    animation-play-state: paused;
+}
+
+@keyframes avatar-glow {
+    0%, 100% {
+        box-shadow:
+            0 0 60px rgba(0, 245, 255, 0.6),
+            0 0 120px rgba(255, 0, 255, 0.4);
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        box-shadow:
+            0 0 90px rgba(255, 0, 255, 0.8),
+            0 0 150px rgba(0, 245, 255, 0.5);
+        filter: hue-rotate(30deg);
+    }
+}
+
+.face {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.eyes {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 35px;
+}
+
+.eye {
+    width: 20px;
+    height: 20px;
+    background: var(--bg-dark);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.8);
+    animation: blink-cyber 4s infinite;
+}
+
+.eye::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    top: 6px;
+    left: 6px;
+    box-shadow: 0 0 15px var(--glow);
+}
+
+@keyframes blink-cyber {
+    0%, 98%, 100% { transform: scaleY(1); }
+    99% { transform: scaleY(0.1); }
+}
+
+.mustache, .mouth {
+    display: none; /* Plus minimaliste */
+}
+
+.thinking-bubble {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 245, 255, 0.2);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    animation: bubble-cyber 2s infinite;
+    box-shadow: 0 0 30px var(--glow);
+}
+
+@keyframes bubble-cyber {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-10px) scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+.title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    animation: gradient-flow 3s linear infinite;
+    text-shadow:
+        0 0 40px rgba(0, 245, 255, 0.5),
+        0 0 80px rgba(255, 0, 255, 0.3);
+}
+
+@keyframes gradient-flow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.subtitle {
+    color: var(--primary);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 20px var(--glow);
+}
+
+.mood-indicator {
+    display: inline-block;
+    background: rgba(0, 245, 255, 0.1);
+    border: 2px solid var(--primary);
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+}
+
+.mood-label {
+    font-weight: 700;
+    color: var(--text-light);
+    margin-right: 8px;
+}
+
+.mood-text {
+    font-style: italic;
+    color: var(--primary);
+    animation: mood-flicker 3s infinite;
+}
+
+@keyframes mood-flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Chat container cyberpunk */
+.chat-container {
+    background: rgba(10, 0, 20, 0.6);
+    border: 2px solid rgba(0, 245, 255, 0.2);
+    border-radius: 25px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow:
+        inset 0 0 50px rgba(0, 245, 255, 0.05),
+        0 0 30px rgba(0, 245, 255, 0.1);
+}
+
+.messages {
+    max-height: 500px;
+    overflow-y: auto;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.messages::-webkit-scrollbar {
+    width: 12px;
+}
+
+.messages::-webkit-scrollbar-track {
+    background: rgba(0, 245, 255, 0.05);
+    border-radius: 10px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary), var(--secondary));
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--glow);
+}
+
+.message {
+    margin-bottom: 20px;
+    animation: message-cyber-slide 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes message-cyber-slide {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.message-content {
+    padding: 20px 25px;
+    border-radius: 20px;
+    max-width: 85%;
+    word-wrap: break-word;
+    transition: all 0.3s;
+}
+
+.message-content:hover {
+    transform: translateX(5px);
+}
+
+.user-message .message-content {
+    background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(255, 0, 255, 0.2));
+    color: var(--text-light);
+    margin-left: auto;
+    border: 2px solid var(--primary);
+    border-bottom-right-radius: 5px;
+    box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+}
+
+.bot-message .message-content {
+    background: rgba(26, 15, 46, 0.8);
+    color: var(--text-light);
+    border: 2px solid rgba(255, 0, 255, 0.4);
+    border-bottom-left-radius: 5px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+}
+
+.bot-message .message-content p {
+    margin: 10px 0;
+    line-height: 1.7;
+}
+
+/* Input cyberpunk */
+.input-container {
+    display: flex;
+    gap: 15px;
+}
+
+.input-field {
+    flex: 1;
+    padding: 20px 25px;
+    border: 2px solid rgba(0, 245, 255, 0.3);
+    border-radius: 30px;
+    font-size: 1.1rem;
+    outline: none;
+    background: rgba(10, 0, 20, 0.6);
+    color: var(--text-light);
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.3s;
+    box-shadow: inset 0 0 20px rgba(0, 245, 255, 0.05);
+}
+
+.input-field::placeholder {
+    color: rgba(0, 245, 255, 0.5);
+}
+
+.input-field:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 40px rgba(0, 245, 255, 0.4),
+        inset 0 0 30px rgba(0, 245, 255, 0.1);
+}
+
+.send-btn {
+    padding: 20px 40px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 40px rgba(0, 245, 255, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.send-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.send-btn:hover::before {
+    left: 100%;
+}
+
+.send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 60px rgba(0, 245, 255, 0.8);
+}
+
+.btn-text {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-icon {
+    display: none;
+}
+
+/* Stats cyberpunk */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 245, 255, 0.05);
+    border: 2px solid rgba(0, 245, 255, 0.3);
+    border-radius: 20px;
+    flex: 1;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 40px rgba(0, 245, 255, 0.4);
+    border-color: var(--primary);
+}
+
+.stat-number {
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary);
+    text-shadow: 0 0 20px var(--glow);
+    animation: stat-glow 2s infinite;
+}
+
+@keyframes stat-glow {
+    0%, 100% {
+        text-shadow: 0 0 20px var(--glow);
+    }
+    50% {
+        text-shadow: 0 0 40px var(--glow), 0 0 60px rgba(255, 0, 255, 0.3);
+    }
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Typing indicator */
+.typing-indicator {
+    display: inline-block;
+    padding: 20px 25px;
+    background: rgba(26, 15, 46, 0.8);
+    border: 2px solid rgba(255, 0, 255, 0.4);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    margin: 0 4px;
+    animation: typing-cyber 1.4s infinite;
+    box-shadow: 0 0 15px var(--glow);
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing-cyber {
+    0%, 60%, 100% {
+        transform: translateY(0) scale(1);
+        opacity: 0.7;
+    }
+    30% {
+        transform: translateY(-12px) scale(1.3);
+        opacity: 1;
+        box-shadow: 0 0 25px var(--glow);
+    }
+}
+
+/* Secret activation effect */
+.secret-activated {
+    animation: secret-cyber-explosion 2s ease-out !important;
+}
+
+@keyframes secret-cyber-explosion {
+    0% {
+        transform: scale(1) rotate(0deg);
+        filter: hue-rotate(0deg) brightness(1);
+    }
+    25% {
+        transform: scale(1.3) rotate(90deg);
+        filter: hue-rotate(180deg) brightness(2);
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        filter: hue-rotate(360deg) brightness(3);
+        box-shadow: 0 0 200px rgba(255, 255, 255, 1);
+    }
+    75% {
+        transform: scale(1.3) rotate(270deg);
+        filter: hue-rotate(540deg) brightness(2);
+    }
+    100% {
+        transform: scale(1) rotate(360deg);
+        filter: hue-rotate(720deg) brightness(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 25px;
+    }
+
+    .title {
+        font-size: 2.5rem;
+        letter-spacing: 3px;
+    }
+
+    .avatar-circle {
+        width: 150px;
+        height: 150px;
+    }
+
+    .stats {
+        flex-direction: column;
+    }
+
+    .input-container {
+        flex-direction: column;
+    }
+
+    .send-btn {
+        width: 100%;
+    }
+}

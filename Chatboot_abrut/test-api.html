@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Groq</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #0a0014;
+            color: #00f5ff;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-section {
+            background: rgba(0, 245, 255, 0.1);
+            border: 2px solid #00f5ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #00f5ff;
+            color: #0a0014;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #00d4e0;
+        }
+        .result {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #00f5ff;
+            padding: 15px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .error {
+            border-left-color: #ff0066;
+            color: #ff0066;
+        }
+        .success {
+            border-left-color: #00ff88;
+            color: #00ff88;
+        }
+        h1 {
+            color: #ff00ff;
+        }
+        h2 {
+            color: #00f5ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Diagnostic API Groq</h1>
+
+    <div class="test-section">
+        <h2>1. Vérification de la Configuration</h2>
+        <button onclick="checkConfig()">Vérifier Config</button>
+        <div id="configResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test de Connexion API</h2>
+        <button onclick="testAPI()">Tester l'API</button>
+        <div id="apiResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test de Conversation Complète</h2>
+        <button onclick="testConversation()">Test Complet</button>
+        <div id="convResult"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Générer une Nouvelle Clé API</h2>
+        <p>Si les tests échouent, générez une nouvelle clé :</p>
+        <ol>
+            <li>Allez sur <a href="https://console.groq.com" target="_blank" style="color: #00f5ff;">console.groq.com</a></li>
+            <li>Créez un compte gratuit (ou connectez-vous)</li>
+            <li>Dans "API Keys", cliquez sur "Create API Key"</li>
+            <li>Copiez la clé (commence par "gsk_")</li>
+            <li>Collez-la dans config.js</li>
+        </ol>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        function checkConfig() {
+            const resultDiv = document.getElementById('configResult');
+            resultDiv.innerHTML = '<div class="result">Vérification en cours...</div>';
+
+            setTimeout(() => {
+                let html = '';
+
+                // Vérifier CONFIG
+                if (typeof CONFIG === 'undefined') {
+                    html += '<div class="result error">❌ CONFIG non défini ! Problème avec config.js</div>';
+                    resultDiv.innerHTML = html;
+                    return;
+                }
+
+                html += '<div class="result success">✅ CONFIG chargé</div>';
+
+                // Vérifier la clé
+                const key = CONFIG.GROQ_API_KEY;
+                if (!key || key === '') {
+                    html += '<div class="result error">❌ Clé API vide</div>';
+                } else if (key === 'VOTRE_CLE_API_ICI') {
+                    html += '<div class="result error">❌ Clé API non configurée (valeur par défaut)</div>';
+                } else if (!key.startsWith('gsk_')) {
+                    html += '<div class="result error">❌ Format de clé invalide (devrait commencer par "gsk_")</div>';
+                } else {
+                    const masked = key.substring(0, 8) + '...' + key.substring(key.length - 4);
+                    html += `<div class="result success">✅ Clé API présente : ${masked}</div>`;
+                    html += `<div class="result">Longueur : ${key.length} caractères</div>`;
+                }
+
+                resultDiv.innerHTML = html;
+            }, 100);
+        }
+
+        async function testAPI() {
+            const resultDiv = document.getElementById('apiResult');
+            resultDiv.innerHTML = '<div class="result">Test en cours...</div>';
+
+            try {
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [{
+                            role: 'user',
+                            content: 'Dis juste "Hello" en une phrase courte et drôle'
+                        }],
+                        temperature: 1.0,
+                        max_tokens: 50
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    let errorMsg = `❌ Erreur HTTP ${response.status}\n\n`;
+
+                    if (response.status === 401) {
+                        errorMsg += '🔐 Erreur d\'authentification\n';
+                        errorMsg += 'Votre clé API est invalide ou expirée.\n\n';
+                        errorMsg += 'Solution : Générez une nouvelle clé sur console.groq.com';
+                    } else if (response.status === 429) {
+                        errorMsg += '⚠️ Limite de requêtes atteinte\n';
+                        errorMsg += 'Attendez quelques minutes ou créez un nouveau compte';
+                    } else {
+                        errorMsg += JSON.stringify(data, null, 2);
+                    }
+
+                    resultDiv.innerHTML = `<div class="result error">${errorMsg}</div>`;
+                    return;
+                }
+
+                const aiResponse = data.choices[0].message.content;
+                resultDiv.innerHTML = `
+                    <div class="result success">✅ API fonctionne parfaitement !</div>
+                    <div class="result">Réponse de l'IA : "${aiResponse}"</div>
+                    <div class="result success">🎉 Votre chatbot est prêt à fonctionner !</div>
+                `;
+
+            } catch (error) {
+                let errorMsg = `❌ Erreur : ${error.message}\n\n`;
+
+                if (error.message.includes('Failed to fetch')) {
+                    errorMsg += '🌐 Problème de connexion\n\n';
+                    errorMsg += 'Causes possibles :\n';
+                    errorMsg += '1. Pas de connexion Internet\n';
+                    errorMsg += '2. Bloqueur de publicités actif\n';
+                    errorMsg += '3. Firewall qui bloque l\'API\n';
+                    errorMsg += '4. CORS (testez avec un serveur local)';
+                } else {
+                    errorMsg += 'Détails : ' + JSON.stringify(error, null, 2);
+                }
+
+                resultDiv.innerHTML = `<div class="result error">${errorMsg}</div>`;
+            }
+        }
+
+        async function testConversation() {
+            const resultDiv = document.getElementById('convResult');
+            resultDiv.innerHTML = '<div class="result">Test complet en cours...</div>';
+
+            try {
+                // Test avec le prompt du Professeur Absurde
+                const systemPrompt = `Tu es le Professeur Absurde. Réponds de façon absurde et drôle en 2-3 phrases max avec emojis.`;
+
+                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${CONFIG.GROQ_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'llama-3.3-70b-versatile',
+                        messages: [
+                            { role: 'system', content: systemPrompt },
+                            { role: 'user', content: 'Bonjour, qui es-tu ?' }
+                        ],
+                        temperature: 1.3,
+                        max_tokens: 200
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                const aiResponse = data.choices[0].message.content;
+
+                resultDiv.innerHTML = `
+                    <div class="result success">✅ Test complet réussi !</div>
+                    <div class="result">
+                        <strong>Vous :</strong> Bonjour, qui es-tu ?<br><br>
+                        <strong>Professeur Absurde :</strong> ${aiResponse}
+                    </div>
+                    <div class="result success">🎉 Votre chatbot fonctionne parfaitement !<br>Ouvrez index.html pour l'utiliser</div>
+                `;
+
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="result error">❌ Erreur : ${error.message}</div>`;
+            }
+        }
+
+        // Auto-test au chargement
+        window.onload = () => {
+            checkConfig();
+        };
+    </script>
+</body>
+</html>
