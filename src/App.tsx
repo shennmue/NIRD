@@ -1,6 +1,7 @@
 import { Hero, EmpireIntro, SwordGame, ShooterGame, VillageNIRD } from './views';
 import { useLenis, useScrollbarColor } from './hooks';
 import { Chatbot } from './components/Chatbot';
+import { Decathlon } from './components/Decathlon';
 
 function App() {
   useLenis();
@@ -22,6 +23,9 @@ function App() {
 
       {/* Chatbot flottant */}
       <Chatbot />
+
+      {/* Decathlon popup */}
+      <Decathlon />
     </main>
   );
 }

@@ -376,6 +376,16 @@ export const VillageNIRD = () => {
               alt="Gene"
               className="w-full h-auto object-cover rounded-2xl"
             />
+            {/* Clickable area in the center */}
+            <button
+              onClick={() => {
+                const trigger = document.getElementById('decathlon-trigger');
+                if (trigger) trigger.click();
+              }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full bg-transparent hover:bg-white/10 transition-all duration-300 cursor-pointer border-2 border-transparent hover:border-white/30 hover:scale-110"
+              aria-label="Ouvrir Decathlon"
+              title="Cliquez ici pour découvrir Decathlon"
+            />
           </div>
         </div>
       </div>

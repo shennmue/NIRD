@@ -1,0 +1,1 @@
+export { Decathlon } from './Decathlon';

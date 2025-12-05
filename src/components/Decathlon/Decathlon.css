@@ -1,0 +1,680 @@
+/* Overlay */
+.decathlon-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal */
+.decathlon-modal {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 30px;
+  max-width: 1200px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  position: relative;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.decathlon-modal::-webkit-scrollbar {
+  width: 10px;
+}
+
+.decathlon-modal::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.decathlon-modal::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0082c3, #00a3e0);
+  border-radius: 10px;
+}
+
+/* Close Button */
+.decathlon-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #0082c3;
+  color: #0082c3;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.decathlon-close:hover {
+  background: #0082c3;
+  color: white;
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Header */
+.decathlon-header {
+  text-align: center;
+  padding: 40px 20px 30px;
+  background: linear-gradient(135deg, #0082c3 0%, #00a3e0 50%, #005a8d 100%);
+  border-radius: 30px 30px 0 0;
+}
+
+.decathlon-header h1 {
+  font-size: 3em;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+}
+
+.decathlon-header p {
+  font-size: 1.2em;
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Intro Screen */
+.decathlon-intro {
+  padding: 60px 40px;
+  text-align: center;
+  background: white;
+  min-height: 400px;
+}
+
+.intro-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.intro-emoji {
+  font-size: 5em;
+  margin-bottom: 30px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.decathlon-intro h2 {
+  font-size: 2.5em;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 20px;
+  font-weight: 800;
+}
+
+.intro-text {
+  font-size: 1.3em;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.intro-text-bold {
+  font-size: 1.5em;
+  color: #0082c3;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+/* QCM */
+.decathlon-qcm {
+  padding: 40px;
+  background: white;
+}
+
+.decathlon-qcm h2 {
+  font-size: 2.5em;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 1.1em;
+  margin-bottom: 40px;
+}
+
+.question {
+  margin-bottom: 35px;
+  padding: 25px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 20px;
+  border-left: 5px solid #0082c3;
+  transition: all 0.3s ease;
+}
+
+.question:hover {
+  transform: translateX(5px);
+  box-shadow: 0 8px 30px rgba(0, 130, 195, 0.15);
+}
+
+.question label:first-child {
+  display: block;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+}
+
+.options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.radio-option {
+  position: relative;
+  cursor: pointer;
+    color : black !important;
+}
+
+.radio-option input[type="radio"] {
+  position: absolute;
+    color : black !important;
+  opacity: 0;
+}
+
+.radio-option span {
+  display: block;
+  color : black !important;
+  padding: 15px 20px;
+  border: 3px solid #e8e8e8;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 1em;
+}
+
+.radio-option:hover span {
+  border-color: #0082c3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 130, 195, 0.2);
+}
+
+.radio-option input[type="radio"]:checked + span {
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  color: white;
+  border-color: #0082c3;
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 130, 195, 0.3);
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 18px 40px;
+  font-size: 1.2em;
+  font-weight: 700;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  color: white;
+  box-shadow: 0 8px 30px rgba(0, 130, 195, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 130, 195, 0.5);
+}
+
+.btn-secondary {
+  background: white;
+  color: #0082c3;
+  border: 3px solid #0082c3;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:hover {
+  background: #0082c3;
+  color: white;
+  transform: translateY(-5px);
+}
+
+/* Exercises */
+.decathlon-exercises {
+  padding: 40px;
+  background: white;
+}
+
+.ai-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.ai-loader {
+  width: 70px;
+  height: 70px;
+  border: 6px solid rgba(0, 130, 195, 0.1);
+  border-top: 6px solid #0082c3;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.ai-loading h3 {
+  color: #0082c3;
+  font-size: 1.6em;
+  margin-bottom: 10px;
+}
+
+.ai-insight {
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f9ff 100%);
+  border-left: 5px solid #00d9a3;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.ai-insight::before {
+  content: '🤖';
+  font-size: 2em;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  opacity: 0.3;
+}
+
+.ai-insight h4 {
+  color: #0082c3;
+  font-size: 1.3em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.ai-insight p {
+  color: #1a1a1a;
+  line-height: 1.7;
+  font-size: 1.05em;
+}
+
+.decathlon-exercises h2 {
+  font-size: 2.5em;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.exercises-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.exercise-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.exercise-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 130, 195, 0.25);
+}
+
+.exercise-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #0082c3, #00d9a3);
+}
+
+.exercise-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f9ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4em;
+  overflow: hidden;
+}
+
+.exercise-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.exercise-card:hover .exercise-image img {
+  transform: scale(1.1);
+}
+
+.exercise-content {
+  padding: 20px;
+}
+
+.exercise-content h3 {
+  color: #1a1a1a;
+  font-size: 1.4em;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.exercise-tag {
+  display: inline-block;
+  padding: 5px 12px;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  color: white;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: 600;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exercise-content p {
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.6;
+  font-size: 0.95em;
+}
+
+.exercise-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #f0f0f0;
+  font-size: 0.9em;
+}
+
+.exercise-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+}
+
+.exercise-meta strong {
+  color: #0082c3;
+}
+
+.exercise-product-link {
+  display: block;
+  margin-top: 15px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #ff6b35, #ff8555);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.3s ease;
+  font-size: 0.9em;
+}
+
+.exercise-product-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+}
+
+/* Products */
+.decathlon-products {
+  padding: 40px;
+  background: white;
+}
+
+.decathlon-products h2 {
+  font-size: 2.5em;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 130, 195, 0.25);
+}
+
+.product-badge {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: #ff6b35;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  font-weight: 700;
+  font-size: 0.85em;
+  z-index: 2;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.product-image {
+  width: 100%;
+  height: 220px;
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3em;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.15) rotate(2deg);
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.product-info h3 {
+  color: #1a1a1a;
+  font-size: 1.2em;
+  margin-bottom: 10px;
+  font-weight: 700;
+  min-height: 50px;
+  line-height: 1.3;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.stars {
+  color: #ffa500;
+  font-size: 1.1em;
+  letter-spacing: 1px;
+}
+
+.rating-text {
+  color: #666;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.product-info .description {
+  color: #666;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  min-height: 40px;
+}
+
+.product-info .price {
+  color: #0082c3;
+  font-size: 1.8em;
+  font-weight: 800;
+  margin: 12px 0 15px;
+  display: block;
+}
+
+.product-link {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #0082c3, #00a3e0);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: 700;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9em;
+}
+
+.product-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 130, 195, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .decathlon-modal {
+    max-height: 95vh;
+    border-radius: 20px;
+  }
+
+  .decathlon-header h1 {
+    font-size: 2em;
+    letter-spacing: 3px;
+  }
+
+  .decathlon-header p {
+    font-size: 1em;
+  }
+
+  .decathlon-intro h2 {
+    font-size: 2em;
+  }
+
+  .intro-text {
+    font-size: 1.1em;
+  }
+
+  .decathlon-qcm,
+  .decathlon-exercises,
+  .decathlon-products {
+    padding: 30px 20px;
+  }
+
+  .question {
+    padding: 20px;
+  }
+
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .exercises-grid,
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
