@@ -23,7 +23,7 @@ export const Chatbot = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const API_KEY = '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';
+  const API_KEY = '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';
   const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
   const GROQ_MODEL = 'llama-3.3-70b-versatile';
 

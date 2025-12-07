@@ -146,7 +146,7 @@ export const Decathlon = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [aiInsight, setAiInsight] = useState('');
 
-  const API_KEY = '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';
+  const API_KEY = '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';
   const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
   const GROQ_MODEL = 'mixtral-8x7b-32768';
 
